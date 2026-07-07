@@ -5,7 +5,9 @@ import PyPDF2
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_openai  import ChatOpenAI 
-from langchain.embeddings import HuggingFaceEmbeddings
+#from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.vectorstores import FAISS
 # from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains import RetrievalQA
@@ -20,9 +22,11 @@ text_splitter = CharacterTextSplitter(
             chunk_overlap=200,
             length_function=len,
         )
-
-embeddings = HuggingFaceEmbeddings()
-
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+embeddings = OpenAIEmbeddings(
+    api_key=OPENAI_API_KEY,
+    model="text-embedding-3-small"
+)
 
 def perform_qa(query):
         
